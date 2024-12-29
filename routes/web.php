@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -20,8 +20,8 @@ Route::middleware(['auth:sanctum','verified'])->group(function(){
     Route::get('/', function () {
         return redirect()->route('user_profile',['username'=>auth()->user()->username]);
     });
-    
-    
+
+
     Route::get('/home', function () {
         $profile = auth()->user();
         $iFollow = $profile->iFollow()->take(3);
@@ -34,14 +34,14 @@ Route::middleware(['auth:sanctum','verified'])->group(function(){
 
     Route::get('/followers',function(){
         return view('followers',['profile'=>auth()->user(),'followers'=>auth()->user()->followers()->get()]);
-    
+
     })->name('followers');
-    
+
     Route::get('/following',function(){
         return view('following',['profile'=>auth()->user(),'following'=>auth()->user()->follows()->get()]);
-    
+
     })->name('following');
-   
+
     Route::get('/explore', function () {
         return view('explore', ['profile' => auth()->user(), 'posts'=>auth()->user()->explore()]);
     })->name('explore');

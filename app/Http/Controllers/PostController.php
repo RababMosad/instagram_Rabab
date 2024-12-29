@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\post;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -48,9 +49,9 @@ class PostController extends Controller
 
         // auth()->user()->posts()->create([
         //     'post_caption'=>$data['post_caption'],
-        //     'image_path'   =>$imagePath, 
+        //     'image_path'   =>$imagePath,
         // ]);
-        // return redirect()->route('user_profile',['username' =>auth()->user()->username]); 
+        // return redirect()->route('user_profile',['username' =>auth()->user()->username]);
         return view('applyFilters',["post_caption"=>$data['post_caption'],'image_path'=>$imagePath]);
     }
 
@@ -60,15 +61,18 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(post $post)
+    public function show(Post $post)
     {
+
         if($post==null){
             abort(404);
         }
-        if(auth()->user()!=null || $post->user->status == "private")
+        if( $post->user->status == "private")
             {$this->authorize('view',$post);}
         return view('posts.show',['post'=>$post]);
         }
+
+    //auth()->user()!=null ||
 
     /**
      * Show the form for editing the specified resource.
@@ -76,7 +80,7 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(post $post)
+    public function edit(Post $post)
     {
         if($post==null){
             abort(404);
@@ -93,9 +97,9 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, post $post)
+    public function update(Request $request, Post $post)
     {
-        
+
         if($post==null){
             abort(404);
         }
@@ -130,7 +134,7 @@ class PostController extends Controller
      * @param  \App\Models\post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(post $post)
+    public function destroy(Post $post)
     {
         if($post==null){
             abort(404);

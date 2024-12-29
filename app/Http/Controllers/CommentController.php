@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
 use App\Models\Post;
+use Illuminate\support\Facades\DB;
 class CommentController extends Controller
 {
     /**
@@ -47,8 +48,8 @@ class CommentController extends Controller
                                 ['user_id'=> $user_id,
                             'comment'=>$data['comment'],
 
-                                                        ]); 
-                                            return back();  
+                                                        ]);
+                                            return back();
     }
 
     /**
@@ -93,7 +94,7 @@ class CommentController extends Controller
     $data=request()->validate([
         'comment'=>['required','string','max:255'],
     ]);
-    $comment->update([ 
+    $comment->update([
         'comment'=>$data['comment'],
     ]);
     return redirect('posts/'.$comment->post->id);
